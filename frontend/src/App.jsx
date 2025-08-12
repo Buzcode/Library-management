@@ -1,20 +1,30 @@
 import React from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { useAuth } from './context/AuthContext';
+import { Button } from 'react-bootstrap';
+import './App.css';
+
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
+import HomePage from './pages/HomePage';
 import ProtectedRoute from './components/ProtectedRoute';
-import { useAuth } from './context/AuthContext';
 
-// Navigation component with Bootstrap classes
+// --- Navigation Component ---
 const Navigation = () => {
     const { user, logout } = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();
+        navigate('/login');
+    };
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav className="navbar navbar-expand-lg navbar-light navbar-custom">
             <div className="container-fluid">
                 <Link className="navbar-brand" to="/">LMS</Link>
-                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNav">
@@ -28,18 +38,18 @@ const Navigation = () => {
                             </li>
                         )}
                     </ul>
-                    <div className="d-flex">
+                    <div className="d-flex align-items-center">
                         {user ? (
                             <>
                                 <span className="navbar-text me-3">
                                     Hello, {user.Name} ({user.Role})
                                 </span>
-                                <button className="btn btn-outline-light" onClick={logout}>Logout</button>
+                                <Button variant="outline-secondary" onClick={handleLogout}>Logout</Button>
                             </>
                         ) : (
                             <>
-                                <Link className="btn btn-outline-light me-2" to="/login">Login</Link>
-                                <Link className="btn btn-primary" to="/register">Register</Link>
+                                <Link className="btn btn-outline-primary me-2" to="/login">Log In</Link>
+                                <Link className="btn btn-primary" to="/register">Sign Up</Link>
                             </>
                         )}
                     </div>
@@ -49,18 +59,13 @@ const Navigation = () => {
     );
 };
 
-const HomePage = () => (
-    <div className="container text-center mt-5">
-        <h1>Welcome to the Library Management System</h1>
-        <p className="lead">Your one-stop solution for managing books and members.</p>
-    </div>
-);
 
+// --- Main App Component ---
 function App() {
     return (
         <div>
             <Navigation />
-            <main className="container mt-4">
+            <main>
                 <Routes>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/register" element={<RegisterPage />} />
@@ -68,7 +73,7 @@ function App() {
                     <Route element={<ProtectedRoute />}>
                         <Route path="/dashboard" element={<DashboardPage />} />
                     </Route>
-                    <Route path="*" element={<h3>404 - Page Not Found</h3>} />
+                    <Route path="*" element={<h3 className="text-center mt-5">404 - Page Not Found</h3>} />
                 </Routes>
             </main>
         </div>

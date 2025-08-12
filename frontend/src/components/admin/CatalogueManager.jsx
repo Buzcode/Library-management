@@ -1,47 +1,34 @@
-// Filepath: frontend/src/components/admin/CatalogueManager.jsx
-
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
+
+// Import all the modal components it uses
 import AddBookModal from './AddBookModal';
+import EditBookModal from './EditBookModal';
 import ConfirmDeleteModal from './ConfirmDeleteModal';
-import EditBookModal from './EditBookModal'; // 1. Import the Edit modal
 
-function CatalogueManager() {
-    // State for data and errors
-    const [books, setBooks] = useState([]);
-    const [error, setError] = useState('');
-
-    // State for controlling modals
+// The component now receives its data (books, error) and the main fetch function as props.
+function CatalogueManager({ books, error, fetchBooks }) {
+    // State for controlling the modals remains inside this component
     const [showAddModal, setShowAddModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [showEditModal, setShowEditModal] = useState(false); // 2. Add state for Edit modal
-
-    // State to hold the specific book for an action
+    
+    const [bookToEdit, setBookToEdit] = useState(null);
     const [bookToDelete, setBookToDelete] = useState(null);
-    const [bookToEdit, setBookToEdit] = useState(null); // 3. Add state for the book to edit
 
-    // Function to fetch all active books from the API
-    const fetchBooks = useCallback(async () => {
-        try {
-            const response = await axios.get('http://localhost/LIBRARY-MANAGEMENT/backend/api/catalogue/read.php');
-            setBooks(response.data.data || []);
-        } catch (err) {
-            setError('Could not fetch the book catalogue.');
-            console.error("Error fetching books:", err);
-        }
-    }, []);
+    // Handler to open the edit modal and set the current book data
+    const handleEditClick = (book) => {
+        setBookToEdit(book);
+        setShowEditModal(true);
+    };
 
-    // Fetch books when the component first loads
-    useEffect(() => {
-        fetchBooks();
-    }, [fetchBooks]);
-
-    // --- Handlers for Delete Functionality ---
+    // Handler to open the delete confirmation modal
     const handleDeleteClick = (book) => {
         setBookToDelete(book);
         setShowDeleteModal(true);
     };
 
+    // Handler to execute the delete (archive) action
     const executeDelete = async () => {
         if (!bookToDelete) return;
         try {
@@ -50,20 +37,13 @@ function CatalogueManager() {
             });
             setShowDeleteModal(false);
             setBookToDelete(null);
-            fetchBooks(); // Refresh the list
+            fetchBooks(); // Call the parent's fetch function to refresh the list
         } catch (err) {
-            setError('Could not delete the book. Please try again.');
+            // A local error state could be added here if needed
             console.error("Error deleting book:", err);
             setShowDeleteModal(false);
         }
     };
-
-    // 4. Handler for Edit Functionality
-    const handleEditClick = (book) => {
-        setBookToEdit(book);
-        setShowEditModal(true);
-    };
-
 
     return (
         <div>
@@ -97,7 +77,6 @@ function CatalogueManager() {
                                 <td>{book.Available_copies}</td>
                                 <td>{book.Total_copies}</td>
                                 <td>
-                                    {/* 5. Update the Edit button */}
                                     <button
                                         className="btn btn-sm btn-warning me-2"
                                         onClick={() => handleEditClick(book)}
@@ -121,26 +100,25 @@ function CatalogueManager() {
                 </tbody>
             </table>
 
-            {/* Render all the modals */}
+            {/* --- Modals --- */}
             <AddBookModal
                 show={showAddModal}
                 onClose={() => setShowAddModal(false)}
                 onBookAdded={fetchBooks}
             />
 
-            <ConfirmDeleteModal
-                show={showDeleteModal}
-                onClose={() => setShowDeleteModal(false)}
-                onConfirm={executeDelete}
-                itemName={bookToDelete ? bookToDelete.Author : ''}
-            />
-
-            {/* 6. Render the new Edit modal */}
             <EditBookModal
                 show={showEditModal}
                 onClose={() => setShowEditModal(false)}
                 onBookUpdated={fetchBooks}
                 book={bookToEdit}
+            />
+            
+            <ConfirmDeleteModal
+                show={showDeleteModal}
+                onClose={() => setShowDeleteModal(false)}
+                onConfirm={executeDelete}
+                itemName={bookToDelete ? bookToDelete.Author : ''}
             />
         </div>
     );

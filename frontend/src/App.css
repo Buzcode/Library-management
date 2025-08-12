@@ -1,42 +1,37 @@
-#root {
-  max-width: 1280px;
+body {
+  /* Using a pleasant light orange/peach color as requested */
+  background-color: #FFF0E9;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Style for the new navbar to match the reference */
+.navbar-custom {
+  background-color: #ffffff; /* White background for the navbar */
+  border-bottom: 1px solid #dee2e6; /* Subtle bottom border */
+}
+
+/* Custom styling for the feature cards on the homepage */
+.feature-card {
+  border: 1px solid #e0e0e0;
+  transition: box-shadow .2s ease-in-out, transform .2s ease-in-out;
+  cursor: pointer;
+  background-color: #ffffff; /* Ensure cards are white */
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Basic styling for the book display */
+.book-carousel .card {
+  border: none;
+  background-color: transparent;
+}
+
+.book-carousel .card-img-top {
+  max-width: 180px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+  border-radius: 5px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }

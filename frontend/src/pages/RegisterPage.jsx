@@ -1,11 +1,11 @@
-// Filepath: frontend/src/pages/RegisterPage.jsx
+// src/pages/RegisterPage.jsx
 
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap';
 
 function RegisterPage() {
     const [formData, setFormData] = useState({ Name: '', Email: '', Password: '' });
-    // Let's improve our message state to handle success/error styling
     const [message, setMessage] = useState({ text: '', type: '' });
 
     const handleChange = (e) => {
@@ -26,61 +26,80 @@ function RegisterPage() {
     };
 
     return (
-        <div className="container mt-5">
-            <div className="row justify-content-center">
-                <div className="col-md-6">
-                    <div className="card">
-                        <div className="card-body">
-                            <h2 className="card-title text-center mb-4">Register for an Account</h2>
-                            <form onSubmit={handleSubmit}>
-                                <div className="mb-3">
-                                    <label className="form-label">Name:</label>
-                                    <input
-                                        type="text"
-                                        name="Name"
-                                        className="form-control"
-                                        value={formData.Name}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
-                                <div className="mb-3">
-                                    <label className="form-label">Email:</label>
-                                    <input
-                                        type="email"
-                                        name="Email"
-                                        className="form-control"
-                                        value={formData.Email}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
-                                <div className="mb-3">
-                                    <label className="form-label">Password:</label>
-                                    <input
-                                        type="password"
-                                        name="Password"
-                                        className="form-control"
-                                        value={formData.Password}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
-                                <div className="d-grid">
-                                    <button type="submit" className="btn btn-primary">Register</button>
-                                </div>
-                            </form>
-                            {/* Use Bootstrap alerts for messages */}
-                            {message.text && (
-                                <div className={`alert alert-${message.type} mt-3`} role="alert">
-                                    {message.text}
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <Container className="my-5">
+            {/* This new outer Row's only job is to center the content block */}
+            <Row className="justify-content-center">
+                 {/* This new Col acts as a container for our two-column layout */}
+                <Col lg={10} xl={9}>
+                    <Row className="align-items-center">
+                        {/* Left Column: Descriptive Text */}
+                        <Col md={6} className="d-none d-md-block p-4">
+                            <h1 className="display-4">Sign Up</h1>
+                            <p className="lead">
+                                Get your free library card and borrow digital books from our collection.
+                            </p>
+                        </Col>
+
+                        {/* Right Column: Registration Form Card */}
+                        <Col md={6}>
+                            <Card className="shadow-sm">
+                                <Card.Body className="p-4">
+                                    <h2 className="text-center mb-4 d-md-none">Sign Up</h2>
+                                    <Form onSubmit={handleSubmit}>
+                                        <Form.Group className="mb-3" controlId="registerName">
+                                            <Form.Label>Full Name</Form.Label>
+                                            <Form.Control
+                                                type="text"
+                                                name="Name"
+                                                placeholder="Enter your full name"
+                                                value={formData.Name}
+                                                onChange={handleChange}
+                                                required
+                                            />
+                                        </Form.Group>
+
+                                        <Form.Group className="mb-3" controlId="registerEmail">
+                                            <Form.Label>Email address</Form.Label>
+                                            <Form.Control
+                                                type="email"
+                                                name="Email"
+                                                placeholder="Enter your email"
+                                                value={formData.Email}
+                                                onChange={handleChange}
+                                                required
+                                            />
+                                        </Form.Group>
+
+                                        <Form.Group className="mb-3" controlId="registerPassword">
+                                            <Form.Label>Password</Form.Label>
+                                            <Form.Control
+                                                type="password"
+                                                name="Password"
+                                                placeholder="Create a password"
+                                                value={formData.Password}
+                                                onChange={handleChange}
+                                                required
+                                            />
+                                        </Form.Group>
+
+                                        <div className="d-grid mt-4">
+                                            <Button variant="primary" type="submit" size="lg">
+                                                Sign Up with Email
+                                            </Button>
+                                        </div>
+                                    </Form>
+                                    {message.text && (
+                                        <Alert variant={message.type} className="mt-3">
+                                            {message.text}
+                                        </Alert>
+                                    )}
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    </Row>
+                </Col>
+            </Row>
+        </Container>
     );
 }
 
