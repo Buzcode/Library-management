@@ -1,5 +1,3 @@
-// Filepath: frontend/src/components/admin/ConfirmDeleteModal.jsx
-
 import React from 'react';
 
 function ConfirmDeleteModal({ show, onClose, onConfirm, itemName }) {
@@ -21,8 +19,7 @@ function ConfirmDeleteModal({ show, onClose, onConfirm, itemName }) {
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" onClick={onClose}>Cancel</button>
-                        {/* *** THIS IS THE CRITICAL LINE *** */}
-                        {/* It ensures that clicking this button calls the onConfirm function passed down from CatalogueManager */}
+                        
                         <button type="button" className="btn btn-danger" onClick={onConfirm}>Confirm Delete</button>
                     </div>
                 </div>

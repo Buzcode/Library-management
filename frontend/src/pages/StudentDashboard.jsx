@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import MyProfile from '../components/MyProfile';
-import LoanHistory from '../components/LoanHistory'; // Import the new component
+import LoanHistory from '../components/LoanHistory';
 
 const StudentDashboard = () => {
   const { user } = useAuth();

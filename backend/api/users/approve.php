@@ -1,9 +1,8 @@
 <?php
-// Filepath: backend/api/users/approve.php
 
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
-header('Access-Control-Allow-Methods: PUT'); // Using PUT method for updates
+header('Access-Control-Allow-Methods: PUT'); // PUT method for updates
 header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
 include_once '../../config/database.php';

@@ -1,34 +1,29 @@
+// Filepath: frontend/src/components/admin/CatalogueManager.jsx
+
 import React, { useState } from 'react';
 import axios from 'axios';
-
-// Import all the modal components it uses
 import AddBookModal from './AddBookModal';
 import EditBookModal from './EditBookModal';
 import ConfirmDeleteModal from './ConfirmDeleteModal';
 
-// The component now receives its data (books, error) and the main fetch function as props.
+// This component is now "dumber" - it just receives data and functions as props. This is good!
 function CatalogueManager({ books, error, fetchBooks }) {
-    // State for controlling the modals remains inside this component
     const [showAddModal, setShowAddModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-    
     const [bookToEdit, setBookToEdit] = useState(null);
     const [bookToDelete, setBookToDelete] = useState(null);
 
-    // Handler to open the edit modal and set the current book data
     const handleEditClick = (book) => {
         setBookToEdit(book);
         setShowEditModal(true);
     };
 
-    // Handler to open the delete confirmation modal
     const handleDeleteClick = (book) => {
         setBookToDelete(book);
         setShowDeleteModal(true);
     };
 
-    // Handler to execute the delete (archive) action
     const executeDelete = async () => {
         if (!bookToDelete) return;
         try {
@@ -37,9 +32,8 @@ function CatalogueManager({ books, error, fetchBooks }) {
             });
             setShowDeleteModal(false);
             setBookToDelete(null);
-            fetchBooks(); // Call the parent's fetch function to refresh the list
+            fetchBooks(); // Correctly calls the prop function to refresh
         } catch (err) {
-            // A local error state could be added here if needed
             console.error("Error deleting book:", err);
             setShowDeleteModal(false);
         }
@@ -67,6 +61,7 @@ function CatalogueManager({ books, error, fetchBooks }) {
                     </tr>
                 </thead>
                 <tbody>
+                    {/* Correctly maps over the 'books' prop */}
                     {books.length > 0 ? (
                         books.map(book => (
                             <tr key={book.Book_id}>
@@ -77,49 +72,20 @@ function CatalogueManager({ books, error, fetchBooks }) {
                                 <td>{book.Available_copies}</td>
                                 <td>{book.Total_copies}</td>
                                 <td>
-                                    <button
-                                        className="btn btn-sm btn-warning me-2"
-                                        onClick={() => handleEditClick(book)}
-                                    >
-                                        Edit
-                                    </button>
-                                    <button
-                                        className="btn btn-sm btn-danger"
-                                        onClick={() => handleDeleteClick(book)}
-                                    >
-                                        Delete
-                                    </button>
+                                    <button className="btn btn-sm btn-warning me-2" onClick={() => handleEditClick(book)}>Edit</button>
+                                    <button className="btn btn-sm btn-danger" onClick={() => handleDeleteClick(book)}>Delete</button>
                                 </td>
                             </tr>
                         ))
                     ) : (
-                        <tr>
-                            <td colSpan="7" className="text-center">No books found in the catalogue.</td>
-                        </tr>
+                        <tr><td colSpan="7" className="text-center">No books found in the catalogue.</td></tr>
                     )}
                 </tbody>
             </table>
 
-            {/* --- Modals --- */}
-            <AddBookModal
-                show={showAddModal}
-                onClose={() => setShowAddModal(false)}
-                onBookAdded={fetchBooks}
-            />
-
-            <EditBookModal
-                show={showEditModal}
-                onClose={() => setShowEditModal(false)}
-                onBookUpdated={fetchBooks}
-                book={bookToEdit}
-            />
-            
-            <ConfirmDeleteModal
-                show={showDeleteModal}
-                onClose={() => setShowDeleteModal(false)}
-                onConfirm={executeDelete}
-                itemName={bookToDelete ? bookToDelete.Author : ''}
-            />
+            <AddBookModal show={showAddModal} onClose={() => setShowAddModal(false)} onBookAdded={fetchBooks} />
+            <EditBookModal show={showEditModal} onClose={() => setShowEditModal(false)} onBookUpdated={fetchBooks} book={bookToEdit} />
+            <ConfirmDeleteModal show={showDeleteModal} onClose={() => setShowDeleteModal(false)} onConfirm={executeDelete} itemName={bookToDelete ? bookToDelete.Author : ''} />
         </div>
     );
 }

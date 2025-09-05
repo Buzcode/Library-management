@@ -1,13 +1,9 @@
-// Filepath: frontend/src/context/AuthContext.jsx
-
 import React, { createContext, useState, useContext } from 'react';
 
-// 1. Create the context
 const AuthContext = createContext(null);
 
-// 2. Create the provider component
 export const AuthProvider = ({ children }) => {
-    // State to hold the user data. We'll get this from localStorage to stay logged in on refresh.
+    // State to hold the user data. 
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
 
     // Function to handle login
@@ -36,7 +32,6 @@ export const AuthProvider = ({ children }) => {
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-// 3. Create a custom hook to use the context easily
 export const useAuth = () => {
     return useContext(AuthContext);
 };

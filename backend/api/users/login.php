@@ -1,7 +1,5 @@
 <?php
-// Filepath: backend/api/users/login.php
 
-// --- START OF DEFINITIVE CORS & PREFLIGHT HANDLING ---
 // Allow from any origin
 if (isset($_SERVER['HTTP_ORIGIN'])) {
     header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
@@ -12,14 +10,14 @@ if (isset($_SERVER['HTTP_ORIGIN'])) {
 // Handle preflight OPTIONS request
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD'])) {
-        // Here, we explicitly allow the methods we use
+
         header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
     }
     if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS'])) {
-        // And we explicitly allow the headers our app sends
+        
         header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
     }
-    // We are done with the preflight request, so we exit
+    
     exit(0);
 }
 // --- END OF DEFINITIVE CORS & PREFLIGHT HANDLING ---

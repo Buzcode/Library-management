@@ -1,5 +1,3 @@
-// Filepath: frontend/src/components/admin/UserApproval.jsx
-
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 

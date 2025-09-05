@@ -1,5 +1,3 @@
-// Filepath: frontend/src/components/admin/EditBookModal.jsx
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -7,8 +5,7 @@ function EditBookModal({ show, onClose, onBookUpdated, book }) {
     const [formData, setFormData] = useState({});
     const [message, setMessage] = useState({ text: '', type: '' });
 
-    // When the 'book' prop changes (i.e., when the modal is opened for a new book),
-    // update the form data state.
+  
     useEffect(() => {
         if (book) {
             setFormData(book);
@@ -43,7 +40,7 @@ function EditBookModal({ show, onClose, onBookUpdated, book }) {
                     </div>
                     <div className="modal-body">
                         <form onSubmit={handleSubmit}>
-                            {/* Form fields are the same as AddBookModal, but pre-filled */}
+                            {/* Form fields */}
                             <div className="mb-3">
                                 <label className="form-label">Author</label>
                                 <input type="text" name="Author" className="form-control" onChange={handleChange} value={formData.Author || ''} />
@@ -52,7 +49,7 @@ function EditBookModal({ show, onClose, onBookUpdated, book }) {
                                 <label className="form-label">Publication Date</label>
                                 <input type="date" name="Publication" className="form-control" onChange={handleChange} value={formData.Publication || ''} />
                             </div>
-                            {/* ... add all other fields here just like in AddBookModal ... */}
+                        
                             <div className="mb-3">
                                 <label className="form-label">Total Copies</label>
                                 <input type="number" name="Total_copies" className="form-control" onChange={handleChange} value={formData.Total_copies || ''} />

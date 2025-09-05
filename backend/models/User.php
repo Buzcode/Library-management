@@ -1,5 +1,4 @@
 <?php
-// Filepath: backend/models/User.php
 
 class User {
     private $conn;
@@ -39,14 +38,14 @@ class User {
             return true;
         }
 
-        // --- Corrected Error Handling ---
+        // ---Error Handling ---
         $errorInfo = $stmt->errorInfo();
         printf("Error: %s.\n", $errorInfo[2]);
 
         return false;
     }
 
-    // --- User Login Method ---
+    // --- User Login ---
     public function login() {
         $query = 'SELECT Student_id, Name, Email, Password, Status, Role
                   FROM ' . $this->table . '
@@ -91,7 +90,7 @@ class User {
             return true;
         }
 
-        // --- Corrected Error Handling ---
+        // --- Error Handling ---
         $errorInfo = $stmt->errorInfo();
         printf("Error: %s.\n", $errorInfo[2]);
         

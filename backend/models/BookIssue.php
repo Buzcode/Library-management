@@ -1,5 +1,4 @@
 <?php
-// Filepath: backend/models/BookIssue.php
 
 class BookIssue {
     private $conn;
@@ -77,24 +76,23 @@ class BookIssue {
             return false;
         }
     }
-    // Add this new method inside the BookIssue class in backend/models/BookIssue.php
+    
 
 // --- Return a book ---
 public function returnBook() {
-    // We only need the Book_id to process a return in this simple model.
-    // A more complex system might also require the Student_id.
+   
 
     try {
-        // Start the transaction
+        // transaction
         $this->conn->beginTransaction();
 
         // UPDATE the book_issue table by setting the return date
         // This assumes only one copy of a book can be borrowed by a user at a time
-        // and we are marking the first open loan for that book as returned.
+        
         $return_query = 'UPDATE ' . $this->issue_table . '
                          SET Return_date = :Return_date
                          WHERE Book_id = :Book_id AND Return_date IS NULL
-                         LIMIT 1'; // Use LIMIT 1 to prevent updating multiple records
+                         LIMIT 1'; // LIMIT 1 to prevent updating multiple records
         $return_stmt = $this->conn->prepare($return_query);
 
         // Sanitize data and set return date

@@ -1,9 +1,6 @@
-// Filepath: frontend/src/components/admin/AddBookModal.jsx
-
 import React, { useState } from 'react';
 import axios from 'axios';
 
-// The modal receives props to control its visibility and to refresh the book list
 function AddBookModal({ show, onClose, onBookAdded }) {
     const initialState = {
         Author: '',
@@ -33,9 +30,9 @@ function AddBookModal({ show, onClose, onBookAdded }) {
         try {
             await axios.post('http://localhost/LIBRARY-MANAGEMENT/backend/api/catalogue/create.php', formData);
             setMessage({ text: 'Book added successfully!', type: 'success' });
-            onBookAdded(); // This calls the function in the parent to refresh the list
+            onBookAdded(); // calls the function in the parent to refresh the list
             setFormData(initialState); // Reset form
-            setTimeout(() => { // Close modal after a short delay
+            setTimeout(() => { // Close modal
                 onClose();
                 setMessage({ text: '', type: '' });
             }, 1500);
@@ -45,7 +42,7 @@ function AddBookModal({ show, onClose, onBookAdded }) {
         }
     };
 
-    // If the 'show' prop is false, don't render anything
+    
     if (!show) {
         return null;
     }

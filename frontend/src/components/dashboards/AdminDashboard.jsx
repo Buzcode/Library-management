@@ -1,3 +1,5 @@
+// Filepath: frontend/src/components/dashboards/AdminDashboard.jsx
+
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Card, Row, Col } from 'react-bootstrap';
@@ -7,9 +9,11 @@ import CatalogueManager from '../admin/CatalogueManager';
 import CirculationManager from '../admin/CirculationManager';
 
 function AdminDashboard() {
+    // This state is now the "single source of truth" for the book list.
     const [books, setBooks] = useState([]);
     const [error, setError] = useState('');
 
+    // The main function to fetch books, passed down to child components.
     const fetchBooks = useCallback(async () => {
         try {
             setError(''); 
@@ -21,6 +25,7 @@ function AdminDashboard() {
         }
     }, []);
 
+    // Fetch the books when the component first loads.
     useEffect(() => {
         fetchBooks();
     }, [fetchBooks]);
@@ -34,6 +39,7 @@ function AdminDashboard() {
                     <Card className="shadow-sm h-100">
                         <Card.Header as="h5">Circulation Management</Card.Header>
                         <Card.Body>
+                            {/* The onCirculationChange prop now correctly triggers a refresh */}
                             <CirculationManager onCirculationChange={fetchBooks} />
                         </Card.Body>
                     </Card>
@@ -54,6 +60,7 @@ function AdminDashboard() {
                     <Card className="shadow-sm">
                         <Card.Header as="h5">Catalogue Management</Card.Header>
                         <Card.Body>
+                            {/* Pass the state and the refresh function down as props */}
                             <CatalogueManager books={books} error={error} fetchBooks={fetchBooks} />
                         </Card.Body>
                     </Card>

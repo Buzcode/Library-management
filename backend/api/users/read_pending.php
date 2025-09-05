@@ -1,5 +1,4 @@
 <?php
-// Filepath: backend/api/users/read_pending.php
 
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');

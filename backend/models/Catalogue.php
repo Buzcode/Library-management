@@ -1,5 +1,4 @@
 <?php
-// Filepath: backend/models/Catalogue.php
 
 class Catalogue {
     private $conn;
@@ -14,7 +13,7 @@ class Catalogue {
     public $URL;
     public $Book_Type;
     public $File_Format;
-    public $Status; // Include the new Status property
+    public $Status; 
 
     public function __construct($db) {
         $this->conn = $db;
@@ -35,8 +34,7 @@ class Catalogue {
 
     // --- Create a new catalogue item ---
     public function create() {
-        // Book_id is not included because it's auto-incrementing
-        // Status is not included because the database sets its DEFAULT to 'Active'
+        
         $query = 'INSERT INTO ' . $this->table . ' SET
                     Total_copies = :Total_copies,
                     Available_copies = :Available_copies,
@@ -119,7 +117,7 @@ class Catalogue {
     
     // --- Archive a catalogue item (soft delete) ---
     public function archive() {
-        // Create query to update the status to 'Archived'
+        //query to 'Archived'
         $query = 'UPDATE ' . $this->table . '
                   SET Status = "Archived"
                   WHERE Book_id = :Book_id';
@@ -138,7 +136,7 @@ class Catalogue {
             return true;
         }
 
-        // Print error if something goes wrong
+        
         printf("Error: %s.\n", $stmt->error);
         return false;
     }
