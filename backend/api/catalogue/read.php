@@ -4,14 +4,11 @@
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
 
-// --- These two lines are essential ---
-include_once '../../config/database.php';
-include_once '../../models/Catalogue.php'; // <--- THIS LINE IS THE FIX
+include_once '../../config/Database.php';
+include_once '../../models/Catalogue.php';
 
 $database = new Database();
 $db = $database->connect();
-
-// This is line 13, where the error occurred
 $catalogue = new Catalogue($db);
 
 $result = $catalogue->read();
@@ -22,19 +19,34 @@ if ($num > 0) {
     $catalogue_arr['data'] = [];
 
     while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-        extract($row);
+        // This function creates variables like $Book_id, $Book_Title, $Book_type, $File_format, etc.
+        extract($row); 
+
         $item = [
             'Book_id' => $Book_id,
+            'Book_Title' => $Book_Title,
             'Author' => $Author,
             'Publication' => $Publication,
             'Available_copies' => $Available_copies,
             'Total_copies' => $Total_copies,
-            'Book_Type' => $Book_Type
+            
+            // First fix: Match the 'Book_type' column name
+            'Book_Type' => $Book_type,
+            
+            'URL' => $URL,
+            
+            // --- THIS IS THE FINAL FIX ---
+            // Second fix: Match the 'File_format' column name
+            'File_Format' => $File_format,
+            
+            'Status' => $Status
         ];
         array_push($catalogue_arr['data'], $item);
     }
+    http_response_code(200);
     echo json_encode($catalogue_arr);
 } else {
-    echo json_encode(['message' => 'No Books Found in Catalogue']);
+    http_response_code(200);
+    echo json_encode(['data' => []]);
 }
 ?>

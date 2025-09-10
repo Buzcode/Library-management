@@ -4,7 +4,6 @@ import AddBookModal from './AddBookModal';
 import EditBookModal from './EditBookModal';
 import ConfirmDeleteModal from './ConfirmDeleteModal';
 
-
 function CatalogueManager({ books, error, fetchBooks }) {
     const [showAddModal, setShowAddModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
@@ -30,7 +29,7 @@ function CatalogueManager({ books, error, fetchBooks }) {
             });
             setShowDeleteModal(false);
             setBookToDelete(null);
-            fetchBooks(); // calls the prop function to refresh
+            fetchBooks();
         } catch (err) {
             console.error("Error deleting book:", err);
             setShowDeleteModal(false);
@@ -46,10 +45,12 @@ function CatalogueManager({ books, error, fetchBooks }) {
 
             {error && <div className="alert alert-danger">{error}</div>}
             
+            {/* --- START: UPDATED THE TABLE --- */}
             <table className="table table-hover">
                 <thead className="table-dark">
                     <tr>
                         <th>ID</th>
+                        <th>Book Title</th>
                         <th>Author</th>
                         <th>Publication Date</th>
                         <th>Type</th>
@@ -59,11 +60,11 @@ function CatalogueManager({ books, error, fetchBooks }) {
                     </tr>
                 </thead>
                 <tbody>
-                    {/*  maps over the 'books' prop */}
                     {books.length > 0 ? (
                         books.map(book => (
                             <tr key={book.Book_id}>
                                 <td>{book.Book_id}</td>
+                                <td>{book.Book_Title}</td>
                                 <td>{book.Author}</td>
                                 <td>{book.Publication}</td>
                                 <td>{book.Book_Type}</td>
@@ -76,14 +77,15 @@ function CatalogueManager({ books, error, fetchBooks }) {
                             </tr>
                         ))
                     ) : (
-                        <tr><td colSpan="7" className="text-center">No books found in the catalogue.</td></tr>
+                        <tr><td colSpan="8" className="text-center">No books found in the catalogue.</td></tr>
                     )}
                 </tbody>
             </table>
+            {/* --- END: UPDATED THE TABLE --- */}
 
             <AddBookModal show={showAddModal} onClose={() => setShowAddModal(false)} onBookAdded={fetchBooks} />
             <EditBookModal show={showEditModal} onClose={() => setShowEditModal(false)} onBookUpdated={fetchBooks} book={bookToEdit} />
-            <ConfirmDeleteModal show={showDeleteModal} onClose={() => setShowDeleteModal(false)} onConfirm={executeDelete} itemName={bookToDelete ? bookToDelete.Author : ''} />
+            <ConfirmDeleteModal show={showDeleteModal} onClose={() => setShowDeleteModal(false)} onConfirm={executeDelete} itemName={bookToDelete ? bookToDelete.Book_Title : ''} />
         </div>
     );
 }
