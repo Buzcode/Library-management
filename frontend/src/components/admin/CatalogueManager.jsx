@@ -1,12 +1,10 @@
-// Filepath: frontend/src/components/admin/CatalogueManager.jsx
-
 import React, { useState } from 'react';
 import axios from 'axios';
 import AddBookModal from './AddBookModal';
 import EditBookModal from './EditBookModal';
 import ConfirmDeleteModal from './ConfirmDeleteModal';
 
-// This component is now "dumber" - it just receives data and functions as props. This is good!
+
 function CatalogueManager({ books, error, fetchBooks }) {
     const [showAddModal, setShowAddModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
@@ -32,7 +30,7 @@ function CatalogueManager({ books, error, fetchBooks }) {
             });
             setShowDeleteModal(false);
             setBookToDelete(null);
-            fetchBooks(); // Correctly calls the prop function to refresh
+            fetchBooks(); // calls the prop function to refresh
         } catch (err) {
             console.error("Error deleting book:", err);
             setShowDeleteModal(false);
@@ -61,7 +59,7 @@ function CatalogueManager({ books, error, fetchBooks }) {
                     </tr>
                 </thead>
                 <tbody>
-                    {/* Correctly maps over the 'books' prop */}
+                    {/*  maps over the 'books' prop */}
                     {books.length > 0 ? (
                         books.map(book => (
                             <tr key={book.Book_id}>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import api from '../services/api';
+import axios from 'axios';
+import { Table, Alert, Spinner, Badge } from 'react-bootstrap';
 
 const LoanHistory = () => {
   const { user } = useAuth();
@@ -9,58 +10,85 @@ const LoanHistory = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if (user?.UserID) {
+    // We check for `user.Student_id` (lowercase 'd') to be consistent with the login process
+    if (user?.Student_id) {
       const fetchLoanHistory = async () => {
+        setLoading(true);
         try {
-          const response = await api.get(`/get_loan_history.php?userId=${user.UserID}`);
+          // --- FIX #1: THE API URL ---
+          // The parameter is now `userId` to match your get_loan_history.php script.
+          const response = await axios.get(`http://localhost/library-management/backend/api/circulation/get_loan_history.php?userId=${user.Student_id}`);
+          
+          // --- FIX #2: THE DATA KEY ---
+          // We now look for `response.data.records` to match the JSON from your PHP script.
           setLoans(response.data.records || []);
+          setError('');
         } catch (err) {
           setError('Failed to fetch loan history.');
-          console.error(err);
+          console.error('Loan History API Error:', err);
         } finally {
           setLoading(false);
         }
       };
       fetchLoanHistory();
+    } else {
+      setLoading(false);
     }
   }, [user]);
 
+  const getStatusBadge = (status) => {
+    if (status === 'Issued') return <Badge bg="primary">Issued</Badge>;
+    if (status === 'Overdue') return <Badge bg="danger">Overdue</Badge>;
+    if (status === 'Returned') return <Badge bg="success">Returned</Badge>;
+    return <Badge bg="secondary">{status}</Badge>;
+  };
+
   if (loading) {
-    return <p>Loading loan history...</p>;
+    return (
+      <div className="d-flex justify-content-center my-5">
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading history...</span>
+        </Spinner>
+      </div>
+    );
   }
 
   if (error) {
-    return <p className="text-red-500">{error}</p>;
+    return <Alert variant="danger">{error}</Alert>;
   }
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold mb-4">My Loan History</h2>
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white">
-          <thead className="bg-gray-200">
+    <div className="mt-5">
+      <h4 className="mb-3">My Borrowing History</h4>
+      <div className="table-responsive">
+        <table className="table table-striped table-hover">
+          <thead className="table-light">
             <tr>
-              <th className="py-2 px-4">Title</th>
-              <th className="py-2 px-4">Author</th>
-              <th className="py-2 px-4">Issue Date</th>
-              <th className="py-2 px-4">Return Date</th>
-              <th className="py-2 px-4">Status</th>
+              <th>Title</th>
+              <th>Author</th>
+              <th>Issue Date</th>
+              <th>Due Date</th>
+              <th>Return Date</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
             {loans.length > 0 ? (
               loans.map((loan) => (
-                <tr key={loan.IssueID} className="border-b">
-                  <td className="py-2 px-4">{loan.Title}</td>
-                  <td className="py-2 px-4">{loan.Author}</td>
-                  <td className="py-2 px-4">{loan.IssueDate}</td>
-                  <td className="py-2 px-4">{loan.ReturnDate || 'Not Returned'}</td>
-                  <td className="py-2 px-4">{loan.Status}</td>
+                // --- FIX #3: THE DATA FIELDS ---
+                // We now use the aliased names sent by the PHP API (e.g., IssueID, Title, IssueDate).
+                <tr key={loan.IssueID}>
+                  <td>{loan.Title}</td>
+                  <td>{loan.Author}</td>
+                  <td>{loan.IssueDate}</td>
+                  <td>{loan.DueDate}</td>
+                  <td>{loan.ReturnDate || 'Not Returned'}</td>
+                  <td>{getStatusBadge(loan.Status)}</td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="5" className="text-center py-4">
+                <td colSpan="6" className="text-center py-4 text-muted">
                   You have no loan history.
                 </td>
               </tr>

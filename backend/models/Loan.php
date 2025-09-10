@@ -7,22 +7,29 @@ class Loan {
         $this->conn = $db;
     }
 
+    /**
+     * Fetches the loan history for a specific user, matching your frontend's needs.
+     * @param int $userId The ID of the student.
+     * @return PDOStatement The statement object with the results.
+     */
+    // --- START: FINAL CORRECTED CODE ---
     public function getLoanHistoryByUser($userId) {
+        // This query has been updated to use the correct column names from your database schema
         $query = "SELECT
-                    bi.IssueID,
-                    c.Title,
+                    bi.Issue_id AS IssueID,
+                    c.Book_Title AS Title,
                     c.Author,
-                    bi.IssueDate,
-                    bi.ReturnDate,
-                    bi.Status
+                    bi.Issue_date AS IssueDate,
+                    bi.Return_date AS ReturnDate,
+                    bi.Due_date AS DueDate
                   FROM
                     " . $this->table . " bi
                   JOIN
-                    catalogue c ON bi.BookID = c.BookID
+                    catalogue c ON bi.Book_id = c.Book_id
                   WHERE
-                    bi.UserID = :userId
+                    bi.Student_id = :userId
                   ORDER BY
-                    bi.IssueDate DESC";
+                    bi.Issue_date DESC";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':userId', $userId);

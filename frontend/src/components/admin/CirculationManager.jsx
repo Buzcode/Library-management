@@ -1,5 +1,3 @@
-// Filepath: frontend/src/components/admin/CirculationManager.jsx
-
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
@@ -8,7 +6,7 @@ import { Row, Col, Form, Button, Alert } from 'react-bootstrap';
 function CirculationManager({ onCirculationChange }) {
     const { user } = useAuth();
     const [issueData, setIssueData] = useState({ Book_id: '', Student_id: '' });
-    // THE FIX IS HERE: The extra '=' is removed.
+    
     const [returnData, setReturnData] = useState({ Book_id: '' });
     const [message, setMessage] = useState({ text: '', type: '' });
 
@@ -42,7 +40,7 @@ function CirculationManager({ onCirculationChange }) {
         try {
             await axios.put('http://localhost/LIBRARY-MANAGEMENT/backend/api/circulation/return.php', returnData);
             setMessage({ text: 'Book returned successfully!', type: 'success' });
-            onCirculationChange(); // Refresh parent's book list
+            onCirculationChange(); 
             setReturnData({ Book_id: '' });
         } catch (error) {
             setMessage({ text: 'Failed to return book. Check Book ID.', type: 'danger' });

@@ -1,5 +1,3 @@
-// Filepath: frontend/src/components/dashboards/AdminDashboard.jsx
-
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Card, Row, Col } from 'react-bootstrap';
@@ -9,11 +7,11 @@ import CatalogueManager from '../admin/CatalogueManager';
 import CirculationManager from '../admin/CirculationManager';
 
 function AdminDashboard() {
-    // This state is now the "single source of truth" for the book list.
+    
     const [books, setBooks] = useState([]);
     const [error, setError] = useState('');
 
-    // The main function to fetch books, passed down to child components.
+    //fetch books, passed down to child components.
     const fetchBooks = useCallback(async () => {
         try {
             setError(''); 
@@ -39,7 +37,7 @@ function AdminDashboard() {
                     <Card className="shadow-sm h-100">
                         <Card.Header as="h5">Circulation Management</Card.Header>
                         <Card.Body>
-                            {/* The onCirculationChange prop now correctly triggers a refresh */}
+                            {/* The onCirculationChange prop  triggers a refresh */}
                             <CirculationManager onCirculationChange={fetchBooks} />
                         </Card.Body>
                     </Card>
