@@ -1,0 +1,11 @@
+# Allow Cross-Origin Resource Sharing (CORS)
+Header set Access-Control-Allow-Origin "*"
+Header set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+Header set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
+
+# Apache Rewrite Rules
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # Your rewrite rules would go here if you were using a framework,
+    # but for now, we just need to ensure the engine is on.
+</IfModule>

@@ -10,7 +10,10 @@ import DashboardPage from './pages/DashboardPage';
 import HomePage from './pages/HomePage';
 import ProtectedRoute from './components/ProtectedRoute';
 
-// --- Navigation Component ---
+// --- I've imported the Chat component here ---
+import Chat from './components/Chat'; 
+
+// --- Navigation Component (No changes here) ---
 const Navigation = () => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
@@ -60,8 +63,11 @@ const Navigation = () => {
 };
 
 
-// --- Main App Component ---
+// --- Main App Component (Changes are here) ---
 function App() {
+    // --- Get the user from the auth context ---
+    const { user } = useAuth();
+
     return (
         <div>
             <Navigation />
@@ -76,6 +82,8 @@ function App() {
                     <Route path="*" element={<h3 className="text-center mt-5">404 - Page Not Found</h3>} />
                 </Routes>
             </main>
+            {/* --- Conditionally render the Chat component if the user is logged in --- */}
+            {user && <Chat />}
         </div>
     );
 }
