@@ -3,31 +3,22 @@ import React, { createContext, useState, useContext } from 'react';
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-    // State to hold the user data. 
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+    const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')));
 
-    // Function to handle login
     const login = (userData) => {
-        // Store user data in localStorage
-        localStorage.setItem('user', JSON.stringify(userData));
-        // Set the user state
+        sessionStorage.setItem('user', JSON.stringify(userData));
         setUser(userData);
     };
 
-    // Function to handle logout
     const logout = () => {
-        // Remove user data from localStorage
-        localStorage.removeItem('user');
-        // Set the user state to null
+        sessionStorage.removeItem('user');
         setUser(null);
+        // THE FIX IS HERE: We also reset the unread count in a separate storage
+        // This ensures the next user who logs in starts with a fresh slate.
+        localStorage.setItem('unreadCount', '0'); 
     };
 
-    // The value that will be available to all consuming components
-    const value = {
-        user,
-        login,
-        logout
-    };
+    const value = { user, login, logout };
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

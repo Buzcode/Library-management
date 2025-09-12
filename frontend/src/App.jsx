@@ -82,8 +82,12 @@ function App() {
                     <Route path="*" element={<h3 className="text-center mt-5">404 - Page Not Found</h3>} />
                 </Routes>
             </main>
-            {/* --- Conditionally render the Chat component if the user is logged in --- */}
-            {user && <Chat />}
+            
+            {/* --- THE FIX IS HERE --- */}
+            {/* Adding a unique key forces React to destroy the old chat component */}
+            {/* and create a brand new one whenever the user logs in or out. */}
+            {/* This guarantees its internal state is always reset. */}
+            {user && <Chat key={user.Student_id} />}
         </div>
     );
 }

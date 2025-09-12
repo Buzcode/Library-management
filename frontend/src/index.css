@@ -420,3 +420,66 @@ button:focus-visible {
     color: #213547;
   }
 }
+/* === UNREAD STYLES === */
+
+.chat-bubble {
+  position: fixed;
+  bottom: 25px;
+  right: 25px; /* This was the missing piece */
+  background-color: #646cff;
+  color: white;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 1000;
+  transition: all 0.2s ease-in-out;
+  border: none;
+}
+.unread-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background-color: #dc3545; /* A standard red color */
+  color: white;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid white; /* Or your page's background color */
+}
+
+/* --- REPLACE THIS ENTIRE BLOCK in index.css --- */
+
+/* Style for unread conversations in the list (Dark Mode) */
+.user-list-body li.unread .user-name {
+  font-weight: bold;
+  color: #fff; 
+}
+.user-list-body li.unread .last-message {
+  font-weight: bold;
+  color: #ddd;
+}
+
+/* === LIGHT MODE UNREAD OVERRIDES === */
+@media (prefers-color-scheme: light) {
+  /* ... other light mode rules ... */
+  
+  .user-list-body li.unread .user-name {
+    font-weight: bold;
+    color: #213547;
+  }
+  .user-list-body li.unread .last-message {
+    font-weight: bold;
+    color: #555; /* A darker grey for better contrast when bold */
+  }
+}

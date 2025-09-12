@@ -7,48 +7,51 @@ include_once '../../config/database.php';
 $database = new Database();
 $db = $database->connect();
 
-// Get the logged-in user's ID from the URL
 $current_user_id = isset($_GET['user_id']) ? $_GET['user_id'] : die();
 
-// This advanced query does the following:
-// 1. Creates a temporary table (CTE) called "LatestMessage" that finds the single most recent message 
-//    for every conversation involving the current user.
-// 2. It then selects ALL users from the user table (except the current user).
-// 3. It LEFT JOINS the latest message information. Users with no conversation will have NULL for message details.
-// 4. It SORTS the results: first by the message time descending (placing recent chats at the top and users with no chats at the bottom),
-//    and then by name ascending (to sort the users with no chats alphabetically).
+// This is the corrected and robust query.
+// It uses two CTEs (temporary tables) to first find the latest message for each conversation,
+// and then separately determine if that conversation contains any unread messages.
 $query = "
-    WITH LatestMessage AS (
+    WITH ConversationPartners AS (
+        SELECT
+            LEAST(sender_id, receiver_id) as user1,
+            GREATEST(sender_id, receiver_id) as user2,
+            MAX(sent_at) as max_sent_at,
+            -- This correctly checks if the conversation has any unread messages for the current user
+            MAX(CASE WHEN receiver_id = :current_user_id AND is_read = 0 THEN 1 ELSE 0 END) as is_unread
+        FROM message
+        WHERE sender_id = :current_user_id OR receiver_id = :current_user_id
+        GROUP BY user1, user2
+    ),
+    LatestMessages AS (
         SELECT 
             m.Message_content,
             m.sent_at,
-            m.sender_id,
-            m.receiver_id,
-            ROW_NUMBER() OVER(
-                PARTITION BY 
-                    LEAST(m.sender_id, m.receiver_id), 
-                    GREATEST(m.sender_id, m.receiver_id) 
-                ORDER BY m.sent_at DESC
-            ) as rn
+            LEAST(m.sender_id, m.receiver_id) as user1,
+            GREATEST(m.sender_id, m.receiver_id) as user2
         FROM message m
+        INNER JOIN ConversationPartners cp ON m.sent_at = cp.max_sent_at
+            AND LEAST(m.sender_id, m.receiver_id) = cp.user1
+            AND GREATEST(m.sender_id, m.receiver_id) = cp.user2
     )
     SELECT
         u.Student_id AS id,
         u.Name AS name,
         u.Role AS role,
         lm.Message_content AS last_message,
-        lm.sent_at AS last_message_time
+        cp.max_sent_at AS last_message_time,
+        cp.is_unread
     FROM
         user u
     LEFT JOIN
-        LatestMessage lm ON 
-            ((u.Student_id = lm.sender_id AND :current_user_id = lm.receiver_id) OR 
-             (u.Student_id = lm.receiver_id AND :current_user_id = lm.sender_id))
-            AND lm.rn = 1
+        ConversationPartners cp ON u.Student_id = (CASE WHEN cp.user1 = :current_user_id THEN cp.user2 ELSE cp.user1 END)
+    LEFT JOIN
+        LatestMessages lm ON cp.user1 = lm.user1 AND cp.user2 = lm.user2
     WHERE
         u.Student_id != :current_user_id
     ORDER BY
-        lm.sent_at DESC, u.Name ASC;
+        last_message_time DESC, u.Name ASC;
 ";
 
 $stmt = $db->prepare($query);
@@ -68,7 +71,8 @@ if ($num > 0) {
             'name' => $name,
             'role' => $role,
             'last_message' => $last_message,
-            'last_message_time' => $last_message_time
+            'last_message_time' => $last_message_time,
+            'is_unread' => $is_unread
         );
         array_push($conversations_arr['data'], $conversation_item);
     }
