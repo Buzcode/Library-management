@@ -18,24 +18,23 @@ $database = new Database();
 $db = $database->connect();
 $item = new Catalogue($db);
 
-// --- START: REWRITTEN LOGIC FOR FORM DATA AND FILE UPLOADS ---
+// --- START: CORRECTED LOGIC TO MATCH THE CATALOGUE MODEL ---
 
-// Data from form fields will be in the $_POST superglobal
+// Set properties on the $item object using the correct property names
 $item->Book_Title = $_POST['Book_Title'] ?? '';
 $item->Author = $_POST['Author'] ?? '';
 $item->Publication = $_POST['Publication'] ?? '';
 $item->Total_copies = $_POST['Total_copies'] ?? 1;
-// CRITICAL: Available copies should match total copies for a new book
-$item->Available_copies = $_POST['Total_copies'] ?? 1; 
-$item->Book_Type = $_POST['Book_Type'] ?? 'Physical';
-// Set defaults for URL and File_Format
-$item->URL = '';
-$item->File_Format = '';
+$item->Available_copies = $_POST['Total_copies'] ?? 1; // Available should match Total for a new book
+
+// Use the CORRECT property names: 'Book_type' and 'File_format'
+$item->Book_type = $_POST['Book_Type'] ?? 'Physical';
+$item->File_format = ''; // Default to empty
+$item->URL = '';         // Default to empty
 
 // Handle the PDF file upload if the book type is E-Book
-if ($item->Book_Type === 'E-Book' && isset($_FILES['pdfFile'])) {
+if ($item->Book_type === 'E-Book' && isset($_FILES['pdfFile'])) {
     
-    // Check for upload errors
     if ($_FILES['pdfFile']['error'] !== UPLOAD_ERR_OK) {
         http_response_code(400);
         echo json_encode(['message' => 'File upload error. Code: ' . $_FILES['pdfFile']['error']]);
@@ -43,29 +42,26 @@ if ($item->Book_Type === 'E-Book' && isset($_FILES['pdfFile'])) {
     }
 
     $upload_dir = '../../uploads/';
-    // Create the directory if it doesn't exist
     if (!is_dir($upload_dir)) {
         mkdir($upload_dir, 0777, true);
     }
     
     $file_extension = strtolower(pathinfo($_FILES['pdfFile']['name'], PATHINFO_EXTENSION));
     
-    // Server-side validation for PDF files
     if ($file_extension !== 'pdf') {
         http_response_code(400);
         echo json_encode(['message' => 'Invalid file type. Only PDF files are allowed.']);
         exit();
     }
 
-    // Create a unique filename to prevent overwrites
     $unique_filename = uniqid('book_', true) . '.pdf';
     $target_file = $upload_dir . $unique_filename;
 
-    // Move the uploaded file to the destination
     if (move_uploaded_file($_FILES['pdfFile']['tmp_name'], $target_file)) {
-        // Store the relative path in the database
-        $item->URL = 'uploads/' . $unique_filename;
-        $item->File_Format = 'PDF';
+        // --- THIS IS THE FIX ---
+        // Save the correct, web-accessible path from the project root
+        $item->URL = 'backend/uploads/' . $unique_filename;
+        $item->File_format = 'PDF'; // Set the file format
     } else {
         http_response_code(500);
         echo json_encode(['message' => 'Failed to save the uploaded file.']);
@@ -81,6 +77,4 @@ if ($item->create()) {
     http_response_code(500);
     echo json_encode(['message' => 'Book Not Created']);
 }
-
-// --- END: REWRITTEN LOGIC ---
 ?>

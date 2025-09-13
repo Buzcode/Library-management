@@ -71,6 +71,9 @@ const CatalogueView = ({ onBookIssued }) => {
   if (loading) return <div className="d-flex justify-content-center my-5"><Spinner animation="border" /></div>;
   if (error) return <Alert variant="danger">{error}</Alert>;
 
+  // --- FIX PART 1: Define the base URL of your backend server ---
+  const backendBaseUrl = 'http://localhost/Library-management';
+
   return (
     <div className="mt-4">
       <h4>Library Collection</h4>
@@ -125,7 +128,13 @@ const CatalogueView = ({ onBookIssued }) => {
                       </Button>
                     ) : (
                       book.URL ? (
-                        <a href={book.URL} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">
+                        // --- FIX PART 2: Construct the full URL for the link ---
+                        <a 
+                          href={`${backendBaseUrl}/${book.URL}`} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="btn btn-primary btn-sm"
+                        >
                           Open Link
                         </a>
                       ) : 'In Library'

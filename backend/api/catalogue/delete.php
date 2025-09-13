@@ -23,12 +23,13 @@ $data = json_decode(file_get_contents("php://input"));
 if (!empty($data->Book_id)) {
     $item->Book_id = $data->Book_id;
 
-    if ($item->archive()) {
+    // --- FIX: Call the correct 'delete()' method instead of 'archive()' ---
+    if ($item->delete()) {
         http_response_code(200);
-        echo json_encode(['message' => 'Catalogue Item Deleted']);
+        echo json_encode(['message' => 'Book Deleted Successfully']);
     } else {
         http_response_code(500);
-        echo json_encode(['message' => 'Catalogue Item Not Deleted']);
+        echo json_encode(['message' => 'Book Not Deleted']);
     }
 } else {
     http_response_code(400);
