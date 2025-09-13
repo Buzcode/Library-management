@@ -20,7 +20,7 @@ $data = json_decode(file_get_contents("php://input"));
 if (!empty($data->Book_id) && !empty($data->Student_id) && !empty($data->Librarian_user_id)) {
     $book_issue->Book_id = $data->Book_id;
     $book_issue->Student_id = $data->Student_id;
-    $book_issue->Librarian_user_id = $data->Librarian_user_id; // In a real app, this would come from the logged-in user's session
+    $book_issue->Librarian_user_id = $data->Librarian_user_id; 
 
     if ($book_issue->issue()) {
         echo json_encode(['message' => 'Book Issued Successfully']);
