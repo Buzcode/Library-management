@@ -14,6 +14,7 @@ $fine_per_day = 1.50;
 $student_id = isset($_GET['student_id']) ? $_GET['student_id'] : die();
 
 // The SQL query to find overdue books and calculate the fine
+// CORRECTED to use 'book_issue' as the table name
 $query = "
     SELECT 
         i.Issue_id,
@@ -26,7 +27,7 @@ $query = "
         -- Calculate the total fine based on days overdue and the rate
         (DATEDIFF(CURDATE(), i.Due_date) * :fine_per_day) AS calculated_fine
     FROM 
-        issue i
+        book_issue i
     JOIN 
         book b ON i.Book_id = b.BookID -- Make sure 'b.BookID' matches your book table's primary key name
     WHERE 
