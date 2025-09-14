@@ -13,14 +13,12 @@ $fine_per_day = 1.50;
 // Get the student ID from the URL
 $student_id = isset($_GET['student_id']) ? $_GET['student_id'] : die();
 
-// The SQL query to find overdue books and calculate the fine
-// CORRECTED table names to 'book_issue' and 'catalogue'
-// CORRECTED the JOIN condition to use 'Catalogue_id'
+// The SQL query with all table and column names corrected based on your screenshots.
 $query = "
     SELECT 
         i.Issue_id,
-        b.Title,
-        b.Author,
+        b.Book_Title AS Title, -- Corrected column name
+        b.Author,             -- Corrected column name
         i.Issue_date,
         i.Due_date,
         -- Calculate the number of days overdue
@@ -30,7 +28,7 @@ $query = "
     FROM 
         book_issue i
     JOIN 
-        catalogue b ON i.Book_id = b.Catalogue_id 
+        catalogue b ON i.Book_id = b.Book_id -- Corrected JOIN condition
     WHERE 
         i.Student_id = :student_id
         AND i.Return_date IS NULL         -- The book has not been returned
@@ -60,12 +58,12 @@ if ($num > 0) {
             'issue_date' => $Issue_date,
             'due_date' => $Due_date,
             'days_overdue' => $days_overdue,
-            'fine_amount' => number_format($calculated_fine, 2) // Format to 2 decimal places
+            'fine_amount' => number_format($calculated_fine, 2)
         );
         array_push($fines_arr['data'], $fine_item);
     }
     echo json_encode($fines_arr);
 } else {
-    echo json_encode(array('data' => array())); // Return empty data array if no fines
+    echo json_encode(array('data' => array()));
 }
 ?>

@@ -7,6 +7,9 @@ import UserApproval from '../admin/UserApproval';
 import CatalogueManager from '../admin/CatalogueManager';
 import ActiveLoans from '../admin/ActiveLoans';
 
+// --- NEW: Import the FinesManagement component ---
+import FinesManagement from '../FinesManagement';
+
 function AdminDashboard() {
     
     const [books, setBooks] = useState([]);
@@ -17,11 +20,10 @@ function AdminDashboard() {
             setError(''); 
             const response = await axios.get('http://localhost/LIBRARY-MANAGEMENT/backend/api/catalogue/read.php');
             setBooks(response.data.data || []);
-        } catch (err) { // <-- START: THIS IS THE FIX
-            // We need to wrap the contents of the catch block in curly braces {}
+        } catch (err) {
             setError('Could not fetch the book catalogue.');
             console.error("Error fetching books:", err);
-        } // <-- END: THIS IS THE FIX
+        }
     }, []);
 
     useEffect(() => {
@@ -51,6 +53,16 @@ function AdminDashboard() {
                     </Card>
                 </Col>
             </Row>
+
+            {/* --- NEW: Fines Management Section --- */}
+            {/* I've added this new Row to hold the Fines component. */}
+            {/* It is completely independent of your other components. */}
+            <Row className="mb-4">
+                <Col>
+                    <FinesManagement />
+                </Col>
+            </Row>
+            {/* --- END OF NEW SECTION --- */}
 
             <Row>
                 <Col>
