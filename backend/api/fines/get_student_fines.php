@@ -14,7 +14,8 @@ $fine_per_day = 1.50;
 $student_id = isset($_GET['student_id']) ? $_GET['student_id'] : die();
 
 // The SQL query to find overdue books and calculate the fine
-// CORRECTED to use 'book_issue' as the table name
+// CORRECTED table names to 'book_issue' and 'catalogue'
+// CORRECTED the JOIN condition to use 'Catalogue_id'
 $query = "
     SELECT 
         i.Issue_id,
@@ -29,7 +30,7 @@ $query = "
     FROM 
         book_issue i
     JOIN 
-        book b ON i.Book_id = b.BookID -- Make sure 'b.BookID' matches your book table's primary key name
+        catalogue b ON i.Book_id = b.Catalogue_id 
     WHERE 
         i.Student_id = :student_id
         AND i.Return_date IS NULL         -- The book has not been returned
