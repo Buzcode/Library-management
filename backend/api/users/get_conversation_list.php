@@ -24,7 +24,7 @@ $query = "
         WHERE sender_id = :current_user_id OR receiver_id = :current_user_id
         GROUP BY user1, user2
     ),
-    LatestMessages AS (
+    LatestMessages AS (    
         SELECT 
             m.Message_content,
             m.sent_at,

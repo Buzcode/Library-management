@@ -19,7 +19,7 @@ $user2_id = isset($_GET['user2_id']) ? $_GET['user2_id'] : die(); // The user th
 $query = 'SELECT
             Message_id,
             Message_content,
-            sent_at,
+            sent_at, 
             sender_id,
             receiver_id
         FROM
