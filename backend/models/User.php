@@ -19,6 +19,16 @@ class User {
 
     // --- Create New User Method ---
     public function create() {
+        // --- MODIFICATION START ---
+        // Validate that the email is from the @aust.edu domain
+        if (strpos($this->Email, '@aust.edu') === false || !preg_match('/@aust\.edu$/', $this->Email)) {
+            // This is the server-side security gate.
+            // It stops execution if the email is not valid.
+            printf("Error: Registration is restricted to @aust.edu email addresses.\n");
+            return false;
+        }
+        // --- MODIFICATION END ---
+
         $query = 'INSERT INTO ' . $this->table . '
                   SET Name = :Name, Email = :Email, Password = :Password, Status = :Status, Role = :Role';
 

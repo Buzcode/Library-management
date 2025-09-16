@@ -22,6 +22,15 @@ function RegisterPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setMessage({ text: '', type: '' });
+        
+        // --- MODIFICATION START ---
+        // Frontend validation for immediate user feedback.
+        if (!formData.Email.endsWith('@aust.edu')) {
+            setMessage({ text: 'Registration is restricted to @aust.edu email addresses.', type: 'danger' });
+            return; // Stop the submission if the email is not valid
+        }
+        // --- MODIFICATION END ---
+
         setLoading(true);
 
         const dataToSend = {
