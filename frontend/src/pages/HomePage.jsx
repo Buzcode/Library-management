@@ -1,52 +1,87 @@
 import React from 'react';
-import { Container, Row, Col, Card } from 'react-bootstrap';
-import { BsBook, BsCalendarCheck, BsHeart } from 'react-icons/bs';
+import { Container, Row, Col, Button, Card } from 'react-bootstrap';
+import './HomePage.css';
+
+// CORRECTED IMAGE IMPORTS:
+// Go up one directory (from src/pages to src/), then into assets/
+import man1 from '../assets/man1.jpg';
+import man2 from '../assets/man2.jpg';
+import man3 from '../assets/man3.jpg';
+import man4 from '../assets/man4.jpg';
+import man5 from '../assets/man5.jpg';
+
+
+
 
 const HomePage = () => {
     return (
-        <div>
-            {/* Section 1: Welcome & Features */}
-            <Container className="my-5 text-center">
-                <h1 className="mb-3">Welcome to the Library</h1>
-                <Row className="mt-5 justify-content-center">
-                    {/* Feature 1 */}
-                    <Col md={4} lg={3} className="mb-4">
-                        <Card className="h-100 feature-card p-3">
-                            <Card.Body>
-                                <BsBook size={40} className="text-primary mb-3" />
-                                <Card.Title as="h5">Read Free Library Books Online</Card.Title>
-                                <Card.Text>
-                                    Millions of books available through our digital lending system.
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                    {/* Feature 2 */}
-                    <Col md={4} lg={3} className="mb-4">
-                        <Card className="h-100 feature-card p-3">
-                            <Card.Body>
-                                <BsCalendarCheck size={40} className="text-primary mb-3" />
-                                <Card.Title as="h5">Set a Yearly Reading Goal</Card.Title>
-                                <Card.Text>
-                                    Learn how to set a yearly reading goal and track what you read.
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                    {/* Feature 3 */}
-                    <Col md={4} lg={3} className="mb-4">
-                        <Card className="h-100 feature-card p-3">
-                            <Card.Body>
-                                <BsHeart size={40} className="text-primary mb-3" />
-                                <Card.Title as="h5">Keep Track of your Favorite Books</Card.Title>
-                                <Card.Text>
-                                    Organize your Books using Lists & the Reading Log.
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                </Row>
-            </Container>
+        <div className="homepage-content">
+            {/* Main Welcome Section */}
+            
+
+            {/* Quotes Section */}
+            <div className="quotes-section py-5">
+                <Container fluid className="px-0"> {/* Use fluid container and remove horizontal padding */}
+                    <h2 className="text-center mb-2">Read Today, Shape Tomorrow</h2>
+                    {/* New lines with smaller font */}
+                    <p className="text-center small-text mb-4">Every shelf is a universe, waiting for you to open its sky.</p>
+                    <p className="text-center small-text mb-5">In the library, you don't just borrow books—you borrow lives, centuries, and dreams.</p>
+                    
+                    <Row className="justify-content-center mx-0"> {/* Remove horizontal margins */}
+                        <Col md={8} className="px-0"> {/* Remove horizontal padding from column */}
+                            {/* Quote 1 */}
+                            <div className="quote-item no-box d-flex align-items-center mb-4">
+                                <img src={man1} alt="Frederick Douglass" className="quote-author-img me-4" />
+                                <div>
+                                    <p className="mb-1">"A book is proof that humans are capable of working magic."</p>
+                                    <p className="text-end fw-bold mb-0">— Frederick Douglass</p>
+                                </div>
+                            </div>
+                            {/* Quote 2 */}
+                            <div className="quote-item no-box d-flex align-items-center mb-4">
+                                <img src={man2} alt="Albert Einstein" className="quote-author-img me-4" />
+                                <div>
+                                    <p className="mb-1">"If you want your children to be intelligent, read them fairy tales. If you want them to be more intelligent, read them more fairy tales."</p>
+                                    <p className="text-end fw-bold mb-0">— Albert Einstein</p>
+                                </div>
+                            </div>
+                            {/* Quote 3 */}
+                            <div className="quote-item no-box d-flex align-items-center mb-4">
+                                <img src={man3} alt="Emanuel James Rohn " className="quote-author-img me-4" />
+                                <div>
+                                    <p className="mb-1">"It isn't what the book costs. It's what it will cost you if you don't read it."</p>
+                                    <p className="text-end fw-bold mb-0">— Emanuel James Rohn </p>
+                                </div>
+                            </div>
+                             {/* Quote 4 */}
+                            <div className="quote-item no-box d-flex align-items-center mb-4">
+                                <img src={man4} alt="Theodor Seuss Geise" className="quote-author-img me-4" />
+                                <div>
+                                    <p className="mb-1">"The more that you read, the more things you will know. The more that you learn, the more places you'll go."</p>
+                                    <p className="text-end fw-bold mb-0">— Theodor Seuss Geise </p>
+                                </div>
+                            </div>
+                            {/* Quote 5 */}
+                            <div className="quote-item no-box d-flex align-items-center mb-4">
+                                <img src={man5} alt="Jorge Francisco Isidoro Luis Borges" className="quote-author-img me-4" />
+                                <div>
+                                    <p className="mb-1">"I think of reading a book as no less an experience than travelling or falling in love."</p>
+                                    <p className="text-end fw-bold mb-0">— Jorge Francisco Isidoro Luis Borges </p>
+                                </div>
+                            </div>
+                        </Col>
+                    </Row>
+                </Container>
+            </div>
+
+            {/* Footer Section */}
+            <div className="footer-section py-4 text-center">
+                <Container fluid> {/* Use fluid container here too */}
+                    <h3 className="mb-3">Contact Us</h3>
+                    <p className="mb-1">Phone: 01721111111</p>
+                    <p className="mb-0">Email: yourlibrary@gmail.com</p>
+                </Container>
+            </div>
         </div>
     );
 };

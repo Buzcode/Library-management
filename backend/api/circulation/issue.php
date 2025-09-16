@@ -30,5 +30,5 @@ if (!empty($data->Book_id) && !empty($data->Student_id) && !empty($data->Librari
 } else {
     echo json_encode(['message' => 'Incomplete data. Please provide Book_id, Student_id, and Librarian_user_id.']);
 }
-?>```
+?>
 

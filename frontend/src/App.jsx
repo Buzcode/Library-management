@@ -10,10 +10,8 @@ import DashboardPage from './pages/DashboardPage';
 import HomePage from './pages/HomePage';
 import ProtectedRoute from './components/ProtectedRoute';
 
-// --- I've imported the Chat component here ---
-import Chat from './components/Chat'; 
+import Chat from './components/Chat';
 
-// --- Navigation Component (No changes here) ---
 const Navigation = () => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
@@ -26,14 +24,18 @@ const Navigation = () => {
     return (
         <nav className="navbar navbar-expand-lg navbar-light navbar-custom">
             <div className="container-fluid">
-                <Link className="navbar-brand" to="/">LMS</Link>
+                <Link className="navbar-brand-custom" to="/">
+                    <span className="navbar-brand-title">Your Library</span>
+                    <span className="navbar-brand-subtitle">Read it, love it, return it</span>
+                </Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                        {/* You can remove this nav-item if the dot is not needed */}
                         <li className="nav-item">
-                            <Link className="nav-link" to="/">Home</Link>
+                            <Link className="nav-link" to="/"></Link> 
                         </li>
                         {user && (
                             <li className="nav-item">
@@ -51,8 +53,9 @@ const Navigation = () => {
                             </>
                         ) : (
                             <>
-                                <Link className="btn btn-outline-primary me-2" to="/login">Log In</Link>
-                                <Link className="btn btn-primary" to="/register">Sign Up</Link>
+                                {/* --- CHANGE: Updated classNames for correct button styling --- */}
+                                <Link className="btn-header-login me-2" to="/login">Login</Link>
+                                <Link className="btn-header-signup" to="/register">Sign Up</Link>
                             </>
                         )}
                     </div>
@@ -62,10 +65,7 @@ const Navigation = () => {
     );
 };
 
-
-// --- Main App Component (Changes are here) ---
 function App() {
-    // --- Get the user from the auth context ---
     const { user } = useAuth();
 
     return (
@@ -82,11 +82,7 @@ function App() {
                     <Route path="*" element={<h3 className="text-center mt-5">404 - Page Not Found</h3>} />
                 </Routes>
             </main>
-            
-            {/* --- THE FIX IS HERE --- */}
-            {/* Adding a unique key forces React to destroy the old chat component */}
-            {/* and create a brand new one whenever the user logs in or out. */}
-            {/* This guarantees its internal state is always reset. */}
+
             {user && <Chat key={user.Student_id} />}
         </div>
     );

@@ -1,37 +1,53 @@
-body {
-  /* Using a pleasant light orange/peach color as requested */
-  background-color: #FFF0E9;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-}
 
-/* Style for the new navbar to match the reference */
 .navbar-custom {
-  background-color: #ffffff; /* White background for the navbar */
-  border-bottom: 1px solid #dee2e6; /* Subtle bottom border */
+  background-color: #e7f5fe; /* NEW: Lighter sky blue for navbar */
+  border-bottom: 1px solid #d8eafb; /* A subtle, slightly darker border */
 }
 
-/* Custom styling for the feature cards on the homepage */
-.feature-card {
-  border: 1px solid #e0e0e0;
-  transition: box-shadow .2s ease-in-out, transform .2s ease-in-out;
-  cursor: pointer;
-  background-color: #ffffff; /* Ensure cards are white */
+/* Navbar brand title styling */
+.navbar-brand-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #333; /* Dark text for good contrast */
+    line-height: 1;
 }
 
-.feature-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.navbar-brand-subtitle {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: #666;
+    margin-top: 0;
 }
 
-/* Basic styling for the book display */
-.book-carousel .card {
-  border: none;
-  background-color: transparent;
+/* Custom button styles for the header */
+.btn-header-login, .btn-header-signup {
+    padding: 8px 18px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s ease-in-out, transform 0.2s ease;
+    margin-left: 10px;
 }
 
-.book-carousel .card-img-top {
-  max-width: 180px;
-  margin: 0 auto;
-  border-radius: 5px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+.btn-header-login {
+    background-color: #ffffff; /* A clean white login button */
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+.btn-header-login:hover {
+    background-color: #f2f2f2; /* Slight darkening on hover */
+}
+
+.btn-header-signup {
+    background-color: #007bff; /* A modern, contrasting blue for signup */
+    color: #ffffff;
+    border: 1px solid #007bff;
+}
+
+.btn-header-signup:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    border-color: #0056b3;
+    transform: translateY(-2px);
+    color: #ffffff;
 }

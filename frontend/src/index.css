@@ -1,16 +1,28 @@
+/* === BASE STYLES & THEME SETUP === */
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color-scheme: light; /* Defaulting to light scheme */
+  color: #213547; /* Default text color for light mode */
+  background-color: #f3faff; /* Global light sky blue background */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: #f3faff; /* Ensure body background is consistent */
 }
 
 a {
@@ -20,14 +32,6 @@ a {
 }
 a:hover {
   color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
 }
 
 h1 {
@@ -42,7 +46,7 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #f9f9f9;
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -54,31 +58,43 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
-/* === CHAT WIDGET STYLES === */
+/* === PAGE-SPECIFIC BACKGROUND STYLES === */
 
+/* Styles for Login and Sign Up pages */
+.auth-page {
+  background-color: #f3faff; /* Matches the global light sky blue */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 80px); /* Adjust 80px to your actual header height */
+  padding: 20px 0;
+}
+
+.auth-page .card {
+  background-color: #e7f5fe; /* Lighter sky blue for the form box */
+  border: none;
+}
+
+/* Styles for Student and Admin Dashboard pages */
+.dashboard-page {
+  /* --- CORRECTED: Changed color to match the global background for contrast and a seamless look --- */
+  background-color: #f3faff; 
+  min-height: calc(100vh - 80px); /* Adjust 80px to your actual header height */
+  padding-bottom: 2rem; /* Add some space at the bottom */
+}
+
+
+/* === CHAT WIDGET STYLES === */
 .chat-bubble {
   position: fixed;
   bottom: 25px;
   right: 25px;
-  /* Using your theme's accent color */
   background-color: #646cff;
   color: white;
-  border-radius: 50%; /* Overrides the default button border-radius */
+  border-radius: 50%;
   width: 60px;
   height: 60px;
-  padding: 0; /* Overrides default button padding */
+  padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -86,14 +102,30 @@ button:focus-visible {
   cursor: pointer;
   z-index: 1000;
   transition: all 0.2s ease-in-out;
-  border: none; /* remove the default border */
+  border: none;
 }
 
 .chat-bubble:hover {
-  /* Using a slightly lighter version of your theme's accent color */
   background-color: #747bff;
   transform: scale(1.1);
-  border-color: transparent; /* Ensure hover border doesn't show */
+  border-color: transparent;
+}
+
+.unread-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background-color: #dc3545;
+  color: white;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid white;
 }
 
 .chat-window {
@@ -102,20 +134,18 @@ button:focus-visible {
   right: 25px;
   width: 370px;
   height: 500px;
-  /* Using your theme's dark mode background as a base */
-  background-color: #2d2d2d;
-  color: rgba(255, 255, 255, 0.87);
+  background-color: #ffffff;
+  color: #213547;
   border-radius: 15px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
   z-index: 999;
   overflow: hidden;
-  border: 1px solid #444;
+  border: 1px solid #ddd;
 }
 
 .chat-header {
-  /* Matching the chat bubble for consistency */
   background-color: #646cff;
   color: white;
   padding: 15px;
@@ -127,11 +157,11 @@ button:focus-visible {
 .chat-header h3 {
   margin: 0;
   font-size: 1.2rem;
-  line-height: 1; /* Match the font size */
+  line-height: 1;
 }
 
+.chat-header .back-btn,
 .close-chat-btn {
-  /* Resetting button styles for a clean icon button */
   background: none;
   border: none;
   color: white;
@@ -152,66 +182,46 @@ button:focus-visible {
 
 .chat-body {
   flex-grow: 1;
-  padding: 15px;
   overflow-y: auto;
-}
-
-/* === LIGHT MODE OVERRIDES FOR CHAT === */
-@media (prefers-color-scheme: light) {
-  .chat-window {
-    /* Using your theme's light mode background */
-    background-color: #ffffff;
-    color: #213547;
-    border: 1px solid #ddd;
-  }
-}
-/* === USER LIST STYLES WITHIN CHAT === */
-
-.chat-body.user-list {
-  padding: 0; /* Remove padding to allow full-width list items */
-}
-
-.user-list ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-.user-list li {
-  padding: 12px 15px;
-  border-bottom: 1px solid #444; /* Dark mode border */
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.user-list li:hover {
-  background-color: #3a3a3a; /* Dark mode hover */
-}
-
-.user-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.user-name {
-  font-weight: 500;
-}
-
-.user-role {
-  font-size: 0.8em;
-  padding: 3px 8px;
-  border-radius: 12px;
-  background-color: #555; /* Dark mode role background */
-  color: #eee;
-}
-
-/* === Replace previous .user-list styles with these === */
-
-.user-list-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
+}
+
+/* === CHAT: User List & Conversation Styles === */
+.chat-search-bar {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.chat-search-bar input {
+  width: 100%;
+  padding: 8px 15px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  color: #213547;
+}
+
+.chat-tabs {
+  display: flex;
+  border-bottom: 1px solid #eee;
+}
+
+.chat-tabs button {
+  flex-grow: 1;
+  padding: 12px 10px;
+  background: none;
+  border: none;
+  color: #777;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.chat-tabs button.active {
+  color: #535bf2;
+  border-bottom-color: #535bf2;
+  font-weight: bold;
 }
 
 .user-list-body {
@@ -224,13 +234,23 @@ button:focus-visible {
 
 .user-list-body li {
   padding: 10px 15px;
-  border-bottom: 1px solid #444;
+  border-bottom: 1px solid #eee;
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .user-list-body li:hover {
-  background-color: #3a3a3a;
+  background-color: #f1f1f1;
+}
+
+.user-list-body li.unread .user-name {
+  font-weight: bold;
+  color: #213547;
+}
+
+.user-list-body li.unread .last-message {
+  font-weight: bold;
+  color: #555;
 }
 
 .user-info {
@@ -246,12 +266,12 @@ button:focus-visible {
 
 .last-message-time {
   font-size: 0.75em;
-  color: #aaa;
+  color: #777;
 }
 
 .last-message {
   font-size: 0.9em;
-  color: #bbb;
+  color: #555;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -263,87 +283,7 @@ button:focus-visible {
   color: #888;
 }
 
-/* === NEW STYLES for search, tabs, and message times === */
-
-.chat-search-bar {
-  padding: 10px;
-  border-bottom: 1px solid #444;
-}
-
-.chat-search-bar input {
-  width: 100%;
-  padding: 8px 15px;
-  border-radius: 20px;
-  border: 1px solid #555;
-  background-color: #333;
-  color: white;
-}
-
-.chat-tabs {
-  display: flex;
-  border-bottom: 1px solid #444;
-}
-
-.chat-tabs button {
-  flex-grow: 1;
-  padding: 12px 10px;
-  background: none;
-  border: none;
-  color: #aaa;
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-  transition: all 0.2s;
-}
-
-.chat-tabs button.active {
-  color: #646cff;
-  border-bottom-color: #646cff;
-  font-weight: bold;
-}
-
-.message-bubble-container {
-  display: flex;
-  flex-direction: column;
-}
-.message-bubble-container.sent { align-items: flex-end; }
-.message-bubble-container.received { align-items: flex-start; }
-
-.message-time {
-  font-size: 0.7em;
-  color: #999;
-  margin-top: 3px;
-  padding: 0 8px;
-}
-
-/* === LIGHT MODE OVERRIDES === */
-@media (prefers-color-scheme: light) {
-  .user-list-body li { border-bottom: 1px solid #eee; }
-  .user-list-body li:hover { background-color: #f1f1f1; }
-  .last-message-time { color: #777; }
-  .last-message { color: #555; }
-  
-  .chat-search-bar { border-bottom: 1px solid #eee; }
-  .chat-search-bar input { border: 1px solid #ccc; background-color: #f9f9f9; color: #213547; }
-  
-  .chat-tabs { border-bottom: 1px solid #eee; }
-  .chat-tabs button { color: #777; }
-  .chat-tabs button.active { color: #535bf2; border-bottom-color: #535bf2; }
-}
-/* === CONVERSATION VIEW STYLES === */
-
-.chat-header .back-btn {
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  padding: 0;
-}
-
-.chat-body {
-  display: flex;
-  flex-direction: column;
-}
-
+/* === CHAT: Messages View === */
 .messages-body {
   flex-grow: 1;
   padding: 15px;
@@ -353,6 +293,13 @@ button:focus-visible {
   gap: 10px;
 }
 
+.message-bubble-container {
+  display: flex;
+  flex-direction: column;
+}
+.message-bubble-container.sent { align-items: flex-end; }
+.message-bubble-container.received { align-items: flex-start; }
+
 .message-bubble {
   padding: 8px 12px;
   border-radius: 18px;
@@ -361,37 +308,44 @@ button:focus-visible {
 }
 
 .message-bubble.sent {
-  background-color: #646cff; /* Theme color for sent messages */
+  background-color: #646cff;
   color: white;
   align-self: flex-end;
   border-bottom-right-radius: 4px;
 }
 
 .message-bubble.received {
-  background-color: #3e3e3e; /* Dark mode received bubble */
-  color: rgba(255, 255, 255, 0.87);
+  background-color: #e9e9eb;
+  color: #213547;
   align-self: flex-start;
   border-bottom-left-radius: 4px;
+}
+
+.message-time {
+  font-size: 0.7em;
+  color: #999;
+  margin-top: 3px;
+  padding: 0 8px;
 }
 
 .message-form {
   display: flex;
   padding: 10px;
-  border-top: 1px solid #444; /* Dark mode border */
+  border-top: 1px solid #eee;
 }
 
 .message-form input {
   flex-grow: 1;
-  border: 1px solid #555;
-  background-color: #333;
-  color: white;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #213547;
   padding: 10px;
   border-radius: 20px;
   margin-right: 10px;
 }
 
 .message-form button {
-  background: #646cff; /* Theme color */
+  background: #646cff;
   border: none;
   color: white;
   border-radius: 50%;
@@ -401,85 +355,4 @@ button:focus-visible {
   align-items: center;
   justify-content: center;
   padding: 0;
-}
-
-/* === LIGHT MODE CONVERSATION OVERRIDES === */
-@media (prefers-color-scheme: light) {
-  .message-bubble.received {
-    background-color: #e9e9eb; /* Light mode received bubble */
-    color: #213547;
-  }
-
-  .message-form {
-    border-top: 1px solid #eee;
-  }
-  
-  .message-form input {
-    border: 1px solid #ccc;
-    background-color: #fff;
-    color: #213547;
-  }
-}
-/* === UNREAD STYLES === */
-
-.chat-bubble {
-  position: fixed;
-  bottom: 25px;
-  right: 25px; /* This was the missing piece */
-  background-color: #646cff;
-  color: white;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  z-index: 1000;
-  transition: all 0.2s ease-in-out;
-  border: none;
-}
-.unread-badge {
-  position: absolute;
-  top: -2px;
-  right: -2px;
-  background-color: #dc3545; /* A standard red color */
-  color: white;
-  border-radius: 50%;
-  width: 22px;
-  height: 22px;
-  font-size: 12px;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 2px solid white; /* Or your page's background color */
-}
-
-/* --- REPLACE THIS ENTIRE BLOCK in index.css --- */
-
-/* Style for unread conversations in the list (Dark Mode) */
-.user-list-body li.unread .user-name {
-  font-weight: bold;
-  color: #fff; 
-}
-.user-list-body li.unread .last-message {
-  font-weight: bold;
-  color: #ddd;
-}
-
-/* === LIGHT MODE UNREAD OVERRIDES === */
-@media (prefers-color-scheme: light) {
-  /* ... other light mode rules ... */
-  
-  .user-list-body li.unread .user-name {
-    font-weight: bold;
-    color: #213547;
-  }
-  .user-list-body li.unread .last-message {
-    font-weight: bold;
-    color: #555; /* A darker grey for better contrast when bold */
-  }
 }

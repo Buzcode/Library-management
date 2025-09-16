@@ -1,0 +1,78 @@
+
+.homepage-content {
+    background-color: #f3faff; 
+    min-height: calc(100vh - 70px); /* Adjust based  navbar height */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Welcome Section - Simplified for the new theme */
+.welcome-section {
+    padding: 60px 0;
+    text-align: center; /* Better alignment for welcome text */
+}
+
+.welcome-section h1 {
+    color: #2c3e50; 
+    font-size: 2.8rem;
+    font-weight: 600;
+}
+
+.welcome-section p {
+    font-size: 1.1rem;
+    color: #34495e; 
+    margin-top: 10px;
+}
+
+/* Quotes Section */
+.quotes-section {
+    flex-grow: 1; /* Allows this section to fill available space */
+    padding: 40px 0;
+}
+
+.quote-item {
+    padding: 20px;
+    margin-bottom: 30px;
+    align-items: flex-start;
+}
+
+.quote-author-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #007bff; 
+    flex-shrink: 0;
+}
+
+.quote-item p {
+    font-size: 1.1rem;
+    color: #34495e;
+    line-height: 1.6;
+}
+
+.quote-item p:last-child { /* For the author's name */
+    font-style: italic;
+    color: #566573;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.footer-section {
+    background-color: #2c3e50; /* A dark, complementary blue for the footer */
+    color: #ffffff;
+    padding: 40px 0;
+    margin-top: 30px;
+    font-size: 1rem;
+}
+
+.footer-section h3 {
+    color: #ffffff;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+.footer-section p {
+    margin-bottom: 5px;
+    color: #eaf2f8;
+}
