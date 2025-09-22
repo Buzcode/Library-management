@@ -37,7 +37,6 @@ class BookIssue {
 
             if ($stmt1->rowCount() == 0) {
                 // --- ADDED DEBUGGING LOG ---
-                // This tells you if the failure is because the book is out of stock.
                 error_log("Book issue failed at Step 1: Book ID {$bookId} is out of stock or does not exist.");
                 $this->conn->rollBack();
                 return false;
@@ -59,15 +58,14 @@ class BookIssue {
             return true;
 
         } catch (Exception $e) {
-            // --- THIS IS THE MOST IMPORTANT DEBUGGING LOG ---
-            // It will record the EXACT error message from the database (e.g., foreign key violation).
+           
             error_log("DATABASE ERROR in issueBookByStudent: " . $e->getMessage());
-            // --- END IMPORTANT DEBUGGING LOG ---
+           
 
             $this->conn->rollBack();
             return false;
         }
     }
-    // --- END: MODIFIED FUNCTION ---
+    
 }
 ?>

@@ -1,5 +1,4 @@
 <?php
-// Filepath: backend/api/catalogue/read.php
 
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
@@ -11,7 +10,7 @@ $database = new Database();
 $db = $database->connect();
 $catalogue = new Catalogue($db);
 
-// --- FIX: Call the correct 'readAll()' method for the librarian ---
+// ---  'readAll()' method for the librarian ---
 $result = $catalogue->readAll();
 $num = $result->rowCount();
 
@@ -22,7 +21,7 @@ if ($num > 0) {
     while($row = $result->fetch(PDO::FETCH_ASSOC)) {
         extract($row); 
 
-        // Note: Make sure these keys match your database column names exactly
+        
         $item = [
             'Book_id' => $Book_id,
             'Book_Title' => $Book_Title,
