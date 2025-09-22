@@ -21,8 +21,6 @@ class Catalogue {
         $this->conn = $db;
     }
 
-    // --- (readAll, readActive, and create methods are unchanged) ---
-
     public function readAll() {
         $query = 'SELECT * FROM ' . $this->table . ' ORDER BY Book_id DESC';
         $stmt = $this->conn->prepare($query);
@@ -78,7 +76,7 @@ class Catalogue {
         return false;
     }
 
-    public function delete() {
+    public function delete(): bool { // Keeping ': bool' as seen in your screenshot.
         // Create the DELETE query
         $query = 'DELETE FROM ' . $this->table . ' WHERE Book_id = :Book_id';
 
@@ -89,27 +87,21 @@ class Catalogue {
         $this->Book_id = htmlspecialchars(strip_tags($this->Book_id));
 
         // Bind the ID parameter
-        $stmt->bindParam(':Book_id', $this->Book_id);
+        // THIS IS THE FIXED LINE (removed the extra ')' that was present in your screenshot)
+        $stmt->bindParam(':Book_id', $this->Book_id); 
 
         // Execute the query
         if ($stmt->execute()) {
             return true;
         }
-
+        
         // Print error if something goes wrong
         printf("Error: %s.\n", $stmt->error);
         return false;
     }
 
-    // --- START: THIS IS THE NEWLY ADDED FUNCTION ---
-    /**
-     * Updates a book record in the database.
-     * @return bool True if update is successful, false otherwise.
-     */
     public function update() {
         // Create the UPDATE query
-        // Note: It's assumed Book_Title and Status are not changed via this form,
-        // but you could add them if needed.
         $query = 'UPDATE ' . $this->table . ' SET
                     Author = :Author,
                     Publication = :Publication,
@@ -143,6 +135,5 @@ class Catalogue {
         printf("Error: %s.\n", $stmt->error);
         return false;
     }
-    // --- END: THIS IS THE NEWLY ADDED FUNCTION ---
 }
 ?>

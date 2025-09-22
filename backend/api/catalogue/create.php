@@ -1,5 +1,4 @@
 <?php
-// Filepath: backend/api/catalogue/create.php
 
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
@@ -17,8 +16,6 @@ include_once '../../models/Catalogue.php';
 $database = new Database();
 $db = $database->connect();
 $item = new Catalogue($db);
-
-// --- START: CORRECTED LOGIC TO MATCH THE CATALOGUE MODEL ---
 
 // Set properties on the $item object using the correct property names
 $item->Book_Title = $_POST['Book_Title'] ?? '';
@@ -58,7 +55,6 @@ if ($item->Book_type === 'E-Book' && isset($_FILES['pdfFile'])) {
     $target_file = $upload_dir . $unique_filename;
 
     if (move_uploaded_file($_FILES['pdfFile']['tmp_name'], $target_file)) {
-        // --- THIS IS THE FIX ---
         // Save the correct, web-accessible path from the project root
         $item->URL = 'backend/uploads/' . $unique_filename;
         $item->File_format = 'PDF'; // Set the file format

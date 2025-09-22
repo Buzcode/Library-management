@@ -18,13 +18,16 @@ if ($num > 0) {
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         extract($row);
+        // --- START: MODIFIED ARRAY ---
         $loan_item = array(
             "IssueID" => $IssueID,
+            "StudentID" => $StudentID,
             "StudentName" => $StudentName,
             "Title" => $Title,
             "IssueDate" => $IssueDate,
             "DueDate" => $DueDate
         );
+        // --- END: MODIFIED ARRAY ---
         array_push($loans_arr["records"], $loan_item);
     }
 
