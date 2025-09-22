@@ -1,5 +1,4 @@
 <?php
-// Filepath: backend/api/catalogue/delete.php
 
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
@@ -23,7 +22,7 @@ $data = json_decode(file_get_contents("php://input"));
 if (!empty($data->Book_id)) {
     $item->Book_id = $data->Book_id;
 
-    // --- FIX: Call the correct 'delete()' method instead of 'archive()' ---
+    // Call the correct 'delete()' ---
     if ($item->delete()) {
         http_response_code(200);
         echo json_encode(['message' => 'Book Deleted Successfully']);
