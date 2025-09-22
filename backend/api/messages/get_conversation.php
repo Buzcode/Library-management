@@ -11,7 +11,7 @@ $database = new Database();
 $db = $database->connect();
 
 // Get the user IDs from the URL query string
-// For example: get_conversation.php?user1_id=1&user2_id=3
+
 $user1_id = isset($_GET['user1_id']) ? $_GET['user1_id'] : die(); // The logged-in user
 $user2_id = isset($_GET['user2_id']) ? $_GET['user2_id'] : die(); // The user they are talking to
 
