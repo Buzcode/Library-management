@@ -8,7 +8,6 @@ class Loan {
     }
 
     public function getLoanHistoryByUser($userId) {
-        // This function is correct and does not need changes.
         $query = "SELECT
                     bi.Issue_id AS IssueID,
                     c.Book_Title AS Title,
@@ -31,12 +30,11 @@ class Loan {
         return $stmt;
     }
 
-    // --- START: CORRECTED FUNCTION FOR LIBRARIAN DASHBOARD ---
+    // This function now also selects the student's ID for the librarian dashboard.
     public function getAllActiveLoans() {
-        // --- THIS IS THE FIX ---
-        // We now select `u.Name` instead of `u.Username` to match your 'user' table structure.
         $query = "SELECT 
                     bi.Issue_id AS IssueID,
+                    u.Student_id AS StudentID, 
                     u.Name AS StudentName, 
                     c.Book_Title AS Title,
                     bi.Issue_date AS IssueDate,
@@ -56,9 +54,8 @@ class Loan {
         $stmt->execute();
         return $stmt;
     }
-    // --- END: CORRECTED FUNCTION ---
+    
 
-    // This function for returning a book is correct and does not need changes.
     public function returnBookByIssueId($issueId) {
         $this->conn->beginTransaction();
 

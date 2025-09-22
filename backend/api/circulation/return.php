@@ -1,7 +1,4 @@
 <?php
-// Filepath: backend/api/circulation/return.php
-
-// --- START: CORRECTED CODE ---
 
 // Set headers for CORS and content type
 header('Access-Control-Allow-Origin: *');
@@ -15,9 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit();
 }
 
-// Include necessary files
 include_once '../../config/Database.php';
-// We use the Loan model because it contains the correct return logic
+// Loan model because it contains the correct return logic
 include_once '../../models/Loan.php'; 
 
 // Instantiate database and connect
@@ -49,5 +45,5 @@ if (!empty($data->issue_id)) {
     echo json_encode(['message' => 'Incomplete data. Please provide the loan\'s issue_id.']);
 }
 
-// --- END: CORRECTED CODE ---
+
 ?>
