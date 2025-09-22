@@ -7,13 +7,11 @@ const ActiveLoans = ({ onLoanChange }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
-    // A reusable function to fetch the list of active loans from the new API endpoint
     const fetchActiveLoans = useCallback(async () => {
         setLoading(true);
         try {
-            // This is the new API endpoint we created
             const response = await axios.get('http://localhost/LIBRARY-MANAGEMENT/backend/api/circulation/get_active_loans.php');
-            setLoans(response.data.records || []); // Expects a 'records' key from the API
+            setLoans(response.data.records || []);
             setError('');
         } catch (err) {
             setError('Could not fetch the list of active loans.');
@@ -23,27 +21,19 @@ const ActiveLoans = ({ onLoanChange }) => {
         }
     }, []);
 
-    // Fetch the loans when the component first loads
     useEffect(() => {
         fetchActiveLoans();
     }, [fetchActiveLoans]);
 
-    // This function is called when the librarian clicks the "Mark as Returned" button
     const handleReturn = async (issueId) => {
-        // Ask for confirmation before performing the action
         if (!window.confirm('Are you sure you want to mark this book as returned?')) {
             return;
         }
         try {
-            // Send the request to your updated 'return.php' script
             await axios.post('http://localhost/LIBRARY-MANAGEMENT/backend/api/circulation/return.php', {
-                issue_id: issueId // Send the unique loan ID
+                issue_id: issueId
             });
-            
-            // 1. Refresh this component's list of active loans
             fetchActiveLoans();
-            
-            // 2. Notify the parent dashboard that a change happened
             if (onLoanChange) {
                 onLoanChange();
             }
@@ -63,6 +53,9 @@ const ActiveLoans = ({ onLoanChange }) => {
                 <thead>
                     <tr>
                         <th>Book Title</th>
+                        {/* --- START: ADDED TABLE HEADER --- */}
+                        <th>Student ID</th>
+                        {/* --- END: ADDED TABLE HEADER --- */}
                         <th>Student Name</th>
                         <th>Issue Date</th>
                         <th>Due Date</th>
@@ -74,6 +67,9 @@ const ActiveLoans = ({ onLoanChange }) => {
                         loans.map((loan) => (
                             <tr key={loan.IssueID}>
                                 <td>{loan.Title}</td>
+                                {/* --- START: ADDED TABLE DATA CELL --- */}
+                                <td>{loan.StudentID}</td>
+                                {/* --- END: ADDED TABLE DATA CELL --- */}
                                 <td>{loan.StudentName}</td>
                                 <td>{loan.IssueDate}</td>
                                 <td>{loan.DueDate}</td>
@@ -90,7 +86,8 @@ const ActiveLoans = ({ onLoanChange }) => {
                         ))
                     ) : (
                         <tr>
-                            <td colSpan="5" className="text-center text-muted">
+                            {/* --- CHANGE: Updated colSpan to match new column count --- */}
+                            <td colSpan="6" className="text-center text-muted">
                                 No books are currently issued.
                             </td>
                         </tr>
